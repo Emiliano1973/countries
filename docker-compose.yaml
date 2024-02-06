@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+
+   countries-webapp:
+      image: countries:1.0
+      networks:
+         - countries-network
+         - redis-network
+      ports:
+         - "8081:8080"
+      environment:
+         - EUREKA_SERVER=eurekaserver
+         - DATABASE_SERVER=database1
+         - DATABASE_USER=root
+         - DATABASE_PASSWORD=password
+         - DATABASE_NAME=world
+         - REDIS_SERVER=redis
+      depends_on:
+         - database1
+         - eurekaserver
+         - redis
+   redis:
+      image: redis:latest
+      hostname: redis
+      restart: always
+      environment:
+         - ALLOW_EMPTY_PASSWORD=yes
+         - REDIS_PORT=6379
+         - REDIS_DATABASES=16
+      networks:
+         - redis-network
+      ports:
+         - "6379:6379"
+
+   eurekaserver:
+      image: eureka:1.0
+      ports:
+         - "8761:8761"
+      networks:
+         - countries-network
+   database1:
+      image: mysql:5
+      volumes:
+         - c:/temp/mysql/script:/tmp/script
+         - c:/temp/db-data:/var/lib/mysql
+      networks:
+         - countries-network
+      environment:
+         - MYSQL_ROOT_PASSWORD=password
+         - MYSQL_DATABASE=world
+
+networks:
+   redis-network:
+      driver: bridge
+   countries-network:
+      driver: bridge

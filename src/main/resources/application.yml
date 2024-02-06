@@ -1,0 +1,35 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_SERVER}:8761/eureka/
+server:
+  port: 8080
+
+spring:
+  data:
+    redis:
+      host: ${REDIS_SERVER}
+      port: 6379
+    cache:
+      type: redis
+      cache-names:
+        - cityCache
+        - countryCache
+        - countryLanguageCache
+      redis:
+        time-to-live: 3600000
+        cache-null-values: true
+  application:
+    name: countries-client
+  datasource:
+    url: jdbc:mysql://${DATABASE_SERVER}:3306/${DATABASE_NAME}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
