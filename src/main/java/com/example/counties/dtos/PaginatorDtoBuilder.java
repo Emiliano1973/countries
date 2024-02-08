@@ -1,6 +1,7 @@
 package com.example.counties.dtos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class PaginatorDtoBuilder {
@@ -31,7 +32,7 @@ public class PaginatorDtoBuilder {
     }
 
     public PaginatorDtoBuilder setElements(Collection<? extends Serializable> elements) {
-        this.elements = elements;
+        this.elements = new ArrayList<>(elements);
         return this;
     }
 
