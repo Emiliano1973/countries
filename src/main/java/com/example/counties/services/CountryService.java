@@ -16,4 +16,6 @@ public interface CountryService {
 
     PaginationDto findByRegionByPage(Regions region, int page, int pageSize);
 
+
+    ResponseDto findByPopulation(Integer population);
 }

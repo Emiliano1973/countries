@@ -8,12 +8,15 @@ import java.util.stream.Stream;
 public enum Continents
 {
     //'Asia','Europe','North America','Africa','Oceania','Antarctica','South America'
-    ASIA("Asia"), EUROPE("Europe"), NORTH_AMERICA("North America"),
-    SOUTH_AMERICA("South America"), AFRICA("Africa"), OCEANIA("Oceania"),
-    ANTARCTICA("Antarctica");
+    ASIA("AS","Asia"), EUROPE("EU", "Europe"), NORTH_AMERICA("NA","North America"),
+    SOUTH_AMERICA("SA","South America"), AFRICA("AF","Africa"), OCEANIA("OC","Oceania"),
+    ANTARCTICA("AN","Antarctica");
 
+    private final String code;
     private final String continentName;
-    Continents(String continentName){
+
+    Continents(String code,String continentName){
+        this.code=code;
         this.continentName=continentName;
     }
 
@@ -21,10 +24,17 @@ public enum Continents
         return continentName;
     }
 
-    public static Optional<Continents> getContinentByString(final String continentName){
+    public String getCode() {
+        return code;
+    }
+
+    public static Optional<Continents> getContinentByName(final String continentName){
         return Stream.of(values()).filter(c->c.getContinentName().equalsIgnoreCase(continentName)).findFirst();
     }
-    public static Collection<String> getAllContinents(){
+    public static Optional<Continents> getContinentByCode(final String continentCode){
+        return Stream.of(values()).filter(c->c.getCode().equalsIgnoreCase(continentCode)).findFirst();
+    }
+    public static Collection<String> getAllContinentNames(){
         return Stream.of(values()).map(Continents::getContinentName).collect(Collectors.toList());
     }
 }

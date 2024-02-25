@@ -21,6 +21,7 @@ public interface CountryDao {
 
     PaginationDto findByRegionByPage(Regions region, int page, int pageSize);
 
+    Collection<CountryDto> findByPopulation(Integer population);
 
 
 

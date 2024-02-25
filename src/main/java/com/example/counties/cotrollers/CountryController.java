@@ -55,6 +55,8 @@ public class CountryController {
         return this.countryService.findByPage(page, pageSize);
     }
 
+
+
     @GetMapping( value ="/continent/pages",  produces = MediaType.APPLICATION_JSON_VALUE)
     @Cacheable(value = "country",  keyGenerator = "customKeyGenerator")
     public PaginationDto getByContinentPage(@RequestParam("continent") final Continents continent,
@@ -63,4 +65,10 @@ public class CountryController {
         return this.countryService.findByContinentByPage(continent, page, pageSize);
     }
 
+
+    @GetMapping(value = "/population", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Cacheable(value = "country",  keyGenerator = "customKeyGenerator")
+    public ResponseDto getByPopulation(@RequestParam("population") Integer population){
+        return this.countryService.findByPopulation(population);
+    }
 }

@@ -48,4 +48,11 @@ public class CountryServiceImpl implements CountryService {
     public PaginationDto findByRegionByPage(Regions region, int page, int pageSize) {
         return this.countryDao.findByRegionByPage(region, page, pageSize);
     }
+
+    @Override
+    public ResponseDto findByPopulation(Integer population) {
+        return new ResponseDto(this.countryDao.findByPopulation(population));
+    }
+
+
 }
