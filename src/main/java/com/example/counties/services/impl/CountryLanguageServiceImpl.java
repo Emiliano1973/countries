@@ -1,9 +1,12 @@
 package com.example.counties.services.impl;
 
 import com.example.counties.dao.CountryLanguagesDao;
+import com.example.counties.dtos.CountryLanguageDto;
 import com.example.counties.dtos.ResponseDto;
 import com.example.counties.services.CountryLanguageService;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 public class CountryLanguageServiceImpl  implements CountryLanguageService {
@@ -16,11 +19,13 @@ public class CountryLanguageServiceImpl  implements CountryLanguageService {
 
     @Override
     public  ResponseDto getLanguagesByCountryIdAndIsOfficial(String countryCode, Boolean isOffcial) {
-        return new ResponseDto( this.countryLanguagesDao.getLanguagesByCountryIdAndIsOfficial(countryCode, isOffcial));
+        Collection<CountryLanguageDto> countryLanguageDtos= this.countryLanguagesDao.getLanguagesByCountryIdAndIsOfficial(countryCode, isOffcial);
+        return new ResponseDto( countryLanguageDtos.size(), countryLanguageDtos);
     }
 
     @Override
     public ResponseDto getLanguagesByCountryId(String countryCode) {
-        return new ResponseDto(this.countryLanguagesDao.getLanguagesByCountryId((countryCode)));
+        Collection<CountryLanguageDto> countryLanguageDtos= this.countryLanguagesDao.getLanguagesByCountryId(countryCode);
+        return new ResponseDto( countryLanguageDtos.size(), countryLanguageDtos);
     }
 }

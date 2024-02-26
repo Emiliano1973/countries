@@ -15,7 +15,7 @@ public enum Continents
     private final String code;
     private final String continentName;
 
-    Continents(String code,String continentName){
+    Continents(final String code,final String continentName){
         this.code=code;
         this.continentName=continentName;
     }

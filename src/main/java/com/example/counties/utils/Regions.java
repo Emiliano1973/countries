@@ -34,7 +34,7 @@ public enum Regions {
 
     private final String regionName;
 
-    Regions(String regionName) {
+    Regions(final String regionName) {
         this.regionName = regionName;
     }
 

@@ -1,6 +1,7 @@
 package com.example.counties.services.impl;
 
 import com.example.counties.dao.CountryDao;
+import com.example.counties.dtos.CountryDto;
 import com.example.counties.dtos.PaginationDto;
 import com.example.counties.dtos.ResponseDto;
 import com.example.counties.services.CountryService;
@@ -8,6 +9,8 @@ import com.example.counties.utils.Continents;
 import com.example.counties.utils.Regions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,7 +24,8 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public ResponseDto findAll() {
-        return new ResponseDto(this.countryDao.findAll());
+        Collection<CountryDto> countryDtos=this.countryDao.findAll();
+        return new ResponseDto(countryDtos.size(), countryDtos);
     }
 
     @Override
@@ -31,7 +35,8 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public ResponseDto findByContinent(Continents continent) {
-        return new ResponseDto( this.countryDao.findByContinent(continent));
+        Collection<CountryDto> countryDtos=this.countryDao.findByContinent(continent);
+        return new ResponseDto(countryDtos.size(), countryDtos );
     }
 
     @Override
@@ -41,7 +46,8 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public ResponseDto findByRegion(Regions region) {
-        return new ResponseDto(this.countryDao.findByRegion(region));
+        Collection<CountryDto> countryDtos=this.countryDao.findByRegion(region);
+        return new ResponseDto(countryDtos.size(), countryDtos);
     }
 
     @Override
@@ -51,7 +57,8 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public ResponseDto findByPopulation(Integer population) {
-        return new ResponseDto(this.countryDao.findByPopulation(population));
+        Collection<CountryDto> countryDtos=this.countryDao.findByPopulation(population);
+        return new ResponseDto(countryDtos.size(), countryDtos);
     }
 
 
