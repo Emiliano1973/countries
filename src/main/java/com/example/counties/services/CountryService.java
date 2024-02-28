@@ -18,4 +18,6 @@ public interface CountryService {
 
 
     ResponseDto findByPopulation(Integer population);
+
+    ResponseDto findByEndip(String isIndepYear);
 }

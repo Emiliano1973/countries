@@ -23,6 +23,4 @@ public class CountryLanguage {
     @JoinColumn(name = "CountryCode", referencedColumnName = "Code", updatable = false, insertable = false)
     private Country country;
 
-
-
 }

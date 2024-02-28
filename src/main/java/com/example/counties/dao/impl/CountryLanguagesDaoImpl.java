@@ -2,17 +2,19 @@ package com.example.counties.dao.impl;
 
 import com.example.counties.dao.CountryLanguagesDao;
 import com.example.counties.dtos.CountryLanguageDto;
-import com.example.counties.entities.Country;
-import com.example.counties.entities.CountryLanguage;
+import com.example.counties.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
-import static com.example.counties.utils.CountryLanguageFieldNames.*;
+import static com.example.counties.entities.CountryLanguagePk_.*;
+import static com.example.counties.entities.CountryLanguage_.country;
+import static com.example.counties.entities.CountryLanguage_.countryLanguagePk;
+import static com.example.counties.entities.CountryLanguage_.officialLanguage;
+import static com.example.counties.entities.CountryLanguage_.percentage;
 
 @Repository
 public class CountryLanguagesDaoImpl implements CountryLanguagesDao {
@@ -22,16 +24,17 @@ public class CountryLanguagesDaoImpl implements CountryLanguagesDao {
 
     @Override
     public Collection<CountryLanguageDto> getLanguagesByCountryIdAndIsOfficial(String countryCode, Boolean isOffcial) {
-
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<CountryLanguageDto> criteriaQuery=cb.createQuery(CountryLanguageDto.class);
         Root<CountryLanguage> countryLanguageRoot=criteriaQuery.from(CountryLanguage.class);
-        Join<CountryLanguage, Country> languageCountryJoin=countryLanguageRoot.join(COUNTRY, JoinType.INNER);
-        criteriaQuery.multiselect(languageCountryJoin.get("name"), countryLanguageRoot.get(COUNTRY_LANGUAGE_PK)
-                        .get(LANGUAGE),
-                countryLanguageRoot.get(PERGENTAGE), countryLanguageRoot.get(OFFICIAL_LANGUAGE))
-                .where(cb.equal(countryLanguageRoot.get(COUNTRY_LANGUAGE_PK)
-                .get(COUNTRY_CODE), countryCode), cb.equal(countryLanguageRoot.get(OFFICIAL_LANGUAGE), isOffcial));
+        Join<CountryLanguage, Country> languageCountryJoin=countryLanguageRoot.join(country, JoinType.INNER);
+        criteriaQuery.multiselect(languageCountryJoin.get(Country_.name),
+                        countryLanguageRoot.get(countryLanguagePk)
+                        .get(language),
+                countryLanguageRoot.get(percentage), countryLanguageRoot.get(officialLanguage))
+                .where(cb.equal(countryLanguageRoot.get(countryLanguagePk)
+                .get(CountryLanguagePk_.countryCode), countryCode),
+                        cb.equal(countryLanguageRoot.get(officialLanguage), isOffcial));
         return this.em.createQuery(criteriaQuery).getResultList();
     }
 
@@ -40,13 +43,12 @@ public class CountryLanguagesDaoImpl implements CountryLanguagesDao {
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<CountryLanguageDto> criteriaQuery=cb.createQuery(CountryLanguageDto.class);
         Root<CountryLanguage> countryLanguageRoot=criteriaQuery.from(CountryLanguage.class);
-        Join<CountryLanguage, Country> languageCountryJoin=countryLanguageRoot.join(COUNTRY, JoinType.INNER);
-        //tring countryName, String language, double percentage, boolean official
-        criteriaQuery.multiselect(languageCountryJoin.get("name"), countryLanguageRoot.get(COUNTRY_LANGUAGE_PK)
-                        .get(LANGUAGE),
-                countryLanguageRoot.get(PERGENTAGE), countryLanguageRoot.get(OFFICIAL_LANGUAGE))
-                .where(cb.equal(countryLanguageRoot.get(COUNTRY_LANGUAGE_PK)
-                        .get(COUNTRY_CODE), countryCode));
+        Join<CountryLanguage, Country> languageCountryJoin=countryLanguageRoot.join(country, JoinType.INNER);
+        criteriaQuery.multiselect(languageCountryJoin.get(Country_.name), countryLanguageRoot.get(countryLanguagePk)
+                        .get(language),
+                countryLanguageRoot.get(percentage), countryLanguageRoot.get(officialLanguage))
+                .where(cb.equal(countryLanguageRoot.get(countryLanguagePk)
+                        .get(CountryLanguagePk_.countryCode), countryCode));
         return this.em.createQuery(criteriaQuery).getResultList();
     }
 }

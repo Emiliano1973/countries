@@ -20,6 +20,7 @@ public class Country {
 
     @Column(name = "Continent")
     private String continent;
+
     @Column(name = "Region")
     private String region;
 
@@ -37,6 +38,7 @@ public class Country {
 
     @Column(name = "GNP")
     private  Double gnp;
+
     @Column(name = "GNPOld")
     private  Double gnpOld;
 
@@ -45,6 +47,7 @@ public class Country {
 
     @Column(name = "GovernmentForm")
     private String governmentForm ;
+
     @Column(name = "HeadOfState")
     private String headOfState ;
             //`country`.`Capital`,

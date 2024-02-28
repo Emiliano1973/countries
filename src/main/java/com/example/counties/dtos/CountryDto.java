@@ -6,8 +6,10 @@ import java.io.Serializable;
 
 
 public record CountryDto(
-                           @JsonProperty("countryCode") String countryCode,
-                           @JsonProperty("countryName") String name,
+                           @JsonProperty("countryCode")
+                           String countryCode,
+                           @JsonProperty("countryName")
+                           String name,
                            @JsonProperty("continent")
                            String continent,
                            @JsonProperty("region")
@@ -26,15 +28,12 @@ public record CountryDto(
                            Double gnpOld,
                            @JsonProperty("localName")
                            String localName ,
-
                            @JsonProperty("governmentForm")
                            String governmentForm ,
                            @JsonProperty("headOfState")
                            String headOfState ,
-
                            @JsonProperty("countryCode2")
                            String countryCode2,
-
                            @JsonProperty("capitalName")
                            String capital) implements Serializable {
 

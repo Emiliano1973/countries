@@ -23,6 +23,7 @@ public interface CountryDao {
 
     Collection<CountryDto> findByPopulation(Integer population);
 
+    Collection<CountryDto> findByIndep(Boolean isIndep);
 
 
 

@@ -16,6 +16,4 @@ public class CountryLanguagePk implements Serializable {
     @Column(name = "Language")
     private String language;
 
-
-
 }

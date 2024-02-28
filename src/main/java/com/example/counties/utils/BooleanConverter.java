@@ -11,8 +11,8 @@ public class BooleanConverter implements AttributeConverter<Boolean, String> {
     private static final String TRUE="T";
     private static final String FALSE="F";
     @Override
-    public String convertToDatabaseColumn(Boolean attribute) {
-        Objects.requireNonNull(attribute, "Error, Object in input must not be null");
+    public String convertToDatabaseColumn(final Boolean attribute) {
+        Objects.requireNonNull(attribute, "Error, Object boolean in input cannot be null");
         if(attribute.booleanValue()){
             return TRUE;
         }
@@ -20,7 +20,7 @@ public class BooleanConverter implements AttributeConverter<Boolean, String> {
     }
 
     @Override
-    public Boolean convertToEntityAttribute(String dbData) {
+    public Boolean convertToEntityAttribute(final String dbData) {
         if(TRUE.equalsIgnoreCase(dbData)){
             return Boolean.TRUE;
         }

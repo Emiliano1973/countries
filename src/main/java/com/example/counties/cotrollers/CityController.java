@@ -22,7 +22,7 @@ public class CityController {
 
     private final CityService cityService;
 
-    public CityController(CityService cityService) {
+    public CityController(final CityService cityService) {
         this.cityService = cityService;
     }
 

@@ -51,7 +51,8 @@ public class CountryController {
 
     @GetMapping(value = "/pages", produces = MediaType.APPLICATION_JSON_VALUE)
     @Cacheable(value = "country",  keyGenerator = "customKeyGenerator")
-    public PaginationDto getAllByPage(@RequestParam("page")  final int page, @RequestParam("pageSize") final int pageSize){
+    public PaginationDto getAllByPage(@RequestParam("page")  final int page,
+                                      @RequestParam("pageSize") final int pageSize){
         return this.countryService.findByPage(page, pageSize);
     }
 
@@ -68,7 +69,14 @@ public class CountryController {
 
     @GetMapping(value = "/population", produces = MediaType.APPLICATION_JSON_VALUE)
     @Cacheable(value = "country",  keyGenerator = "customKeyGenerator")
-    public ResponseDto getByPopulation(@RequestParam("population") Integer population){
+    public ResponseDto getByPopulation(@RequestParam("population") final Integer population){
         return this.countryService.findByPopulation(population);
+    }
+
+
+    @GetMapping(value = "/indepYear", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Cacheable(value = "country",  keyGenerator = "customKeyGenerator")
+    public ResponseDto getByIndepYear(@RequestParam("indepYear") final String indepYear){
+        return this.countryService.findByEndip(indepYear);
     }
 }

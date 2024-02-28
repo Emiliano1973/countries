@@ -6,6 +6,7 @@ import com.example.counties.dtos.PaginationDto;
 import com.example.counties.dtos.PaginatorDtoBuilder;
 import com.example.counties.entities.City;
 import com.example.counties.entities.Country;
+import com.example.counties.entities.Country_;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -19,13 +20,11 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.example.counties.utils.CityFieldNames.CITY_ID;
-import static com.example.counties.utils.CityFieldNames.CITY_NAME;
-import static com.example.counties.utils.CityFieldNames.COUNTRY;
-import static com.example.counties.utils.CityFieldNames.DISTRICT;
-import static com.example.counties.utils.CityFieldNames.POPULATION;
-import static com.example.counties.utils.CountryFieldNames.COUNTRY_CODE;
-import static com.example.counties.utils.CountryFieldNames.COUNTRY_NAME;
+import static com.example.counties.entities.City_.country;
+import static com.example.counties.entities.City_.district;
+import static com.example.counties.entities.City_.id;
+import static com.example.counties.entities.City_.name;
+import static com.example.counties.entities.City_.population;
 
 @Repository
 public class CityDaoImpl implements CityDao {
@@ -35,10 +34,9 @@ public class CityDaoImpl implements CityDao {
     @Override
     public Collection<CityDto> findByCountryCode(String countryCode) {
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
-
         CriteriaQuery<CityDto> cityDtoCriteriaQuery=cb.createQuery(CityDto.class);
         Root<City> cityRoot=cityDtoCriteriaQuery.from(City.class);
-        Join<City, Country> cityCountryJoin=cityRoot.join(COUNTRY, JoinType.INNER);
+        Join<City, Country> cityCountryJoin=cityRoot.join(country, JoinType.INNER);
         setCityFields(cb, cityDtoCriteriaQuery, cityRoot, cityCountryJoin, countryCode);
         return this.em.createQuery(cityDtoCriteriaQuery).getResultList();
     }
@@ -49,11 +47,10 @@ public class CityDaoImpl implements CityDao {
         if (counts == 0) {
             return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(0).setPageSize(pageSize).setTotalElements(counts).setElements(new ArrayList<>()).createPaginatorDto();
         }
-
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<CityDto> cityDtoCriteriaQuery=cb.createQuery(CityDto.class);
         Root<City> cityRoot=cityDtoCriteriaQuery.from(City.class);
-        Join<City, Country> cityCountryJoin=cityRoot.join(COUNTRY, JoinType.INNER);
+        Join<City, Country> cityCountryJoin=cityRoot.join(country, JoinType.INNER);
         setCityFields(cb, cityDtoCriteriaQuery, cityRoot, cityCountryJoin, countryCode);
         TypedQuery<CityDto> query=this.em.createQuery(cityDtoCriteriaQuery);
         query.setMaxResults(pageSize);
@@ -69,24 +66,23 @@ public class CityDaoImpl implements CityDao {
 
     private  void setCityFields(CriteriaBuilder cb,CriteriaQuery<CityDto>  cityDtoCriteriaQuery,
                                 Root<City> cityRoot, Join<City, Country> cityCountryJoin, String countryCode){
-
         cityDtoCriteriaQuery.
-                multiselect(cityRoot.get(CITY_NAME), cityRoot.get(DISTRICT),
-                        cityRoot.get(POPULATION), cityCountryJoin.get(COUNTRY_NAME))
-                .where(cb.equal(cityCountryJoin.get(COUNTRY_CODE), countryCode))
-                .groupBy( cityCountryJoin.get(COUNTRY_NAME) ,cityRoot.get(DISTRICT),
-                        cityRoot.get(CITY_NAME), cityRoot.get(POPULATION))
-                .orderBy(cb.desc(cityCountryJoin.get(COUNTRY_NAME)), cb.asc(cityRoot.get(DISTRICT)),
-                        cb.asc(cityRoot.get(CITY_NAME))) ;
+                multiselect(cityRoot.get(name), cityRoot.get(district),
+                        cityRoot.get(population), cityCountryJoin.get(Country_.NAME))
+                .where(cb.equal(cityCountryJoin.get(Country_.countryCode), countryCode))
+                .groupBy( cityCountryJoin.get(Country_.name) ,cityRoot.get(district),
+                        cityRoot.get(name), cityRoot.get(population))
+                .orderBy(cb.desc(cityCountryJoin.get(Country_.name)), cb.asc(cityRoot.get(district)),
+                        cb.asc(cityRoot.get(name))) ;
     }
 
     private int countByCountryCode(String countryCode){
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<Long> cityDtoCriteriaQuery=cb.createQuery(Long.class);
         Root<City> cityRoot=cityDtoCriteriaQuery.from(City.class);
-        Join<City, Country> cityCountryJoin=cityRoot.join(COUNTRY, JoinType.INNER);
-        cityDtoCriteriaQuery.select(cb.count(cityRoot.get(CITY_ID)))
-                .where(cb.equal(cityCountryJoin.get(COUNTRY_CODE), countryCode));
+        Join<City, Country> cityCountryJoin=cityRoot.join(country, JoinType.INNER);
+        cityDtoCriteriaQuery.select(cb.count(cityRoot.get(id)))
+                .where(cb.equal(cityCountryJoin.get(Country_.countryCode), countryCode));
         return this.em.createQuery(cityDtoCriteriaQuery).getSingleResult().intValue();
     }
 }

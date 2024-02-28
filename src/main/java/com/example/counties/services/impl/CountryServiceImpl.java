@@ -61,5 +61,12 @@ public class CountryServiceImpl implements CountryService {
         return new ResponseDto(countryDtos.size(), countryDtos);
     }
 
+    @Override
+    public ResponseDto findByEndip(String isIndepYear) {
+        boolean isEndYear=(isIndepYear.equals("Y"));
+        Collection<CountryDto> countryDtos=this.countryDao.findByIndep(isEndYear);
+        return new ResponseDto(countryDtos.size(), countryDtos);
+    }
+
 
 }

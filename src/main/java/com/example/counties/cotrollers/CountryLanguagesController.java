@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CountryLanguagesController {
     private final CountryLanguageService countryLanguageService;
 
-    public CountryLanguagesController(CountryLanguageService countryLanguageService) {
+    public CountryLanguagesController(final CountryLanguageService countryLanguageService) {
         this.countryLanguageService = countryLanguageService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Cacheable(value = "countryLanguage",  key = "#countryCode")
+    @Cacheable(value = "countryLanguage", keyGenerator = "customKeyGenerator")
     public ResponseDto getLanguagesByCountryCode(@RequestParam("country_code") final String countryCode){
         return this.countryLanguageService.getLanguagesByCountryId(countryCode);
     }
