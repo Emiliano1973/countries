@@ -23,7 +23,8 @@ public class CountryLanguagesDaoImpl implements CountryLanguagesDao {
    private EntityManager em;
 
     @Override
-    public Collection<CountryLanguageDto> getLanguagesByCountryIdAndIsOfficial(String countryCode, Boolean isOffcial) {
+    public Collection<CountryLanguageDto> getLanguagesByCountryIdAndIsOfficial(final String countryCode,
+                                                                               final Boolean isOffcial) {
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<CountryLanguageDto> criteriaQuery=cb.createQuery(CountryLanguageDto.class);
         Root<CountryLanguage> countryLanguageRoot=criteriaQuery.from(CountryLanguage.class);
@@ -39,7 +40,7 @@ public class CountryLanguagesDaoImpl implements CountryLanguagesDao {
     }
 
     @Override
-    public Collection<CountryLanguageDto> getLanguagesByCountryId(String countryCode) {
+    public Collection<CountryLanguageDto> getLanguagesByCountryId(final String countryCode) {
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<CountryLanguageDto> criteriaQuery=cb.createQuery(CountryLanguageDto.class);
         Root<CountryLanguage> countryLanguageRoot=criteriaQuery.from(CountryLanguage.class);

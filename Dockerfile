@@ -1,5 +1,4 @@
-FROM customjava17:1.0
-
+FROM openjdk:17-jdk-slim
 
 MAINTAINER Emiliano Echinofora "emiliano.echinofora@gmail.com"
 

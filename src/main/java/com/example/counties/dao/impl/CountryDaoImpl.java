@@ -20,7 +20,21 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.example.counties.entities.Country_.*;
+import static com.example.counties.entities.Country_.capital;
+import static com.example.counties.entities.Country_.continent;
+import static com.example.counties.entities.Country_.countryCode;
+import static com.example.counties.entities.Country_.countryCode2;
+import static com.example.counties.entities.Country_.gnp;
+import static com.example.counties.entities.Country_.gnpOld;
+import static com.example.counties.entities.Country_.governmentForm;
+import static com.example.counties.entities.Country_.headOfState;
+import static com.example.counties.entities.Country_.indepYear;
+import static com.example.counties.entities.Country_.lifeExpectancy;
+import static com.example.counties.entities.Country_.localName;
+import static com.example.counties.entities.Country_.name;
+import static com.example.counties.entities.Country_.population;
+import static com.example.counties.entities.Country_.region;
+import static com.example.counties.entities.Country_.surfaceArea;
 
 
 @Repository
@@ -43,7 +57,8 @@ public class CountryDaoImpl implements CountryDao {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         int counts = countAll(cb);
         if (counts == 0) {
-            return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(0).setPageSize(pageSize).setTotalElements(counts).setElements(new ArrayList<>()).createPaginatorDto();
+            return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(0).setPageSize(pageSize)
+                    .setTotalElements(counts).setElements(new ArrayList<>()).createPaginatorDto();
         }
         CriteriaQuery<CountryDto> countryDtoCriteriaQuery = cb.createQuery(CountryDto.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
@@ -57,7 +72,8 @@ public class CountryDaoImpl implements CountryDao {
         if ((counts % pageSize) > 0) {
             numPages += 1;
         }
-        return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(numPages).setPageSize(pageSize).setTotalElements(counts).setElements(countryDtos).createPaginatorDto();
+        return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(numPages).setPageSize(pageSize)
+                .setTotalElements(counts).setElements(countryDtos).createPaginatorDto();
     }
 
     @Override
@@ -96,7 +112,8 @@ public class CountryDaoImpl implements CountryDao {
         if ((counts % pageSize) > 0) {
             numPages += 1;
         }
-        return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(numPages).setPageSize(pageSize).setTotalElements(counts).setElements(countryDtos).createPaginatorDto();
+        return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(numPages).setPageSize(pageSize)
+                .setTotalElements(counts).setElements(countryDtos).createPaginatorDto();
     }
 
     @Override
@@ -104,10 +121,10 @@ public class CountryDaoImpl implements CountryDao {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaQuery<CountryDto> countryDtoCriteriaQuery = cb.createQuery(CountryDto.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
-        Join<Country, City> countryCityJoin = countryRoot.join(CAPITAL, JoinType.INNER);
+        Join<Country, City> countryCityJoin = countryRoot.join(capital, JoinType.INNER);
         setCountryField(cb, countryDtoCriteriaQuery, countryRoot, countryCityJoin);
         countryDtoCriteriaQuery
-                .where(cb.equal(countryRoot.get(REGION), region.getRegionName()));
+                .where(cb.equal(countryRoot.get(Country_.region), region.getRegionName()));
         return this.em.createQuery(countryDtoCriteriaQuery).getResultList();
 
 
@@ -118,14 +135,15 @@ public class CountryDaoImpl implements CountryDao {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         int counts = countByFieldName(cb, Country_.region, region.getRegionName());
         if (counts == 0) {
-            return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(0).setPageSize(pageSize).setTotalElements(counts).setElements(new ArrayList<>()).createPaginatorDto();
+            return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(0).setPageSize(pageSize)
+                    .setTotalElements(counts).setElements(new ArrayList<>()).createPaginatorDto();
         }
         CriteriaQuery<CountryDto> countryDtoCriteriaQuery = cb.createQuery(CountryDto.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
-        Join<Country, City> countryCityJoin = countryRoot.join(CAPITAL, JoinType.INNER);
+        Join<Country, City> countryCityJoin = countryRoot.join(capital, JoinType.INNER);
         setCountryField(cb, countryDtoCriteriaQuery, countryRoot, countryCityJoin);
         countryDtoCriteriaQuery
-                .where(cb.equal(countryRoot.get(REGION), region.getRegionName()));
+                .where(cb.equal(countryRoot.get(Country_.region), region.getRegionName()));
         TypedQuery<CountryDto> query = this.em.createQuery(countryDtoCriteriaQuery);
         query.setMaxResults(pageSize);
         query.setFirstResult((page - 1) * pageSize);
@@ -140,19 +158,19 @@ public class CountryDaoImpl implements CountryDao {
     }
 
     @Override
-    public Collection<CountryDto> findByPopulation(Integer population) {
+    public Collection<CountryDto> findByPopulation(final Integer population) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaQuery<CountryDto> countryDtoCriteriaQuery = cb.createQuery(CountryDto.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
-        Join<Country, City> countryCityJoin = countryRoot.join(CAPITAL, JoinType.INNER);
+        Join<Country, City> countryCityJoin = countryRoot.join(capital, JoinType.INNER);
         setCountryField(cb, countryDtoCriteriaQuery, countryRoot, countryCityJoin);
         countryDtoCriteriaQuery
-                .where(cb.lessThanOrEqualTo(countryRoot.get(POPULATION), population));
+                .where(cb.lessThanOrEqualTo(countryRoot.get(Country_.population), population));
         return this.em.createQuery(countryDtoCriteriaQuery).getResultList();
     }
 
     @Override
-    public Collection<CountryDto> findByIndep(Boolean isIndep) {
+    public Collection<CountryDto> findByIndep(final Boolean isIndep) {
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaQuery<CountryDto> countryDtoCriteriaQuery = cb.createQuery(CountryDto.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
@@ -168,14 +186,14 @@ public class CountryDaoImpl implements CountryDao {
         return this.em.createQuery(countryDtoCriteriaQuery).getResultList();
     }
 
-    private int countAll(CriteriaBuilder cb ) {
+    private int countAll(final CriteriaBuilder cb ) {
         CriteriaQuery<Long> countryDtoCriteriaQuery = cb.createQuery(Long.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
         countryDtoCriteriaQuery.select(cb.count(countryRoot.get(countryCode)));
         return this.em.createQuery(countryDtoCriteriaQuery).getSingleResult().intValue();
     }
 
-    private int countByFieldName(CriteriaBuilder cb , final SingularAttribute<Country, String> fieldName, final String value) {
+    private int countByFieldName(final CriteriaBuilder cb , final SingularAttribute<Country, ?> fieldName, final String value) {
         CriteriaQuery<Long> countryDtoCriteriaQuery = cb.createQuery(Long.class);
         Root<Country> countryRoot = countryDtoCriteriaQuery.from(Country.class);
         countryDtoCriteriaQuery.select(cb.count(countryRoot.get(countryCode)))
@@ -184,8 +202,8 @@ public class CountryDaoImpl implements CountryDao {
     }
 
 
-    private void setCountryField(CriteriaBuilder cb ,CriteriaQuery<CountryDto> countryDtoCriteriaQuery,
-                                 Root<Country> countryRoot, Join<Country, City> countryCityJoin){
+    private void setCountryField(final CriteriaBuilder cb ,final CriteriaQuery<CountryDto> countryDtoCriteriaQuery,
+                                 final Root<Country> countryRoot, final Join<Country, City> countryCityJoin){
         countryDtoCriteriaQuery.multiselect
                         (countryRoot.get(countryCode),
                                 countryRoot.get(name),

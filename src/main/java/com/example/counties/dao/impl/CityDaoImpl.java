@@ -32,7 +32,7 @@ public class CityDaoImpl implements CityDao {
    private EntityManager em;
 
     @Override
-    public Collection<CityDto> findByCountryCode(String countryCode) {
+    public Collection<CityDto> findByCountryCode(final String countryCode) {
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<CityDto> cityDtoCriteriaQuery=cb.createQuery(CityDto.class);
         Root<City> cityRoot=cityDtoCriteriaQuery.from(City.class);
@@ -42,7 +42,7 @@ public class CityDaoImpl implements CityDao {
     }
 
     @Override
-    public PaginationDto findByCountryCodeByPage(String countryCode, int page, int pageSize) {
+    public PaginationDto findByCountryCodeByPage(final String countryCode,final int page, final int pageSize) {
         int counts = countByCountryCode(countryCode);
         if (counts == 0) {
             return new PaginatorDtoBuilder().setCurrentPage(page).setTotalPages(0).setPageSize(pageSize).setTotalElements(counts).setElements(new ArrayList<>()).createPaginatorDto();
@@ -64,8 +64,9 @@ public class CityDaoImpl implements CityDao {
     }
 
 
-    private  void setCityFields(CriteriaBuilder cb,CriteriaQuery<CityDto>  cityDtoCriteriaQuery,
-                                Root<City> cityRoot, Join<City, Country> cityCountryJoin, String countryCode){
+    private  void setCityFields(final CriteriaBuilder cb,final CriteriaQuery<CityDto>  cityDtoCriteriaQuery,
+                              final Root<City> cityRoot,final Join<City, Country> cityCountryJoin
+            ,final String countryCode){
         cityDtoCriteriaQuery.
                 multiselect(cityRoot.get(name), cityRoot.get(district),
                         cityRoot.get(population), cityCountryJoin.get(Country_.NAME))
@@ -76,7 +77,7 @@ public class CityDaoImpl implements CityDao {
                         cb.asc(cityRoot.get(name))) ;
     }
 
-    private int countByCountryCode(String countryCode){
+    private int countByCountryCode(final String countryCode){
         CriteriaBuilder cb=this.em.getCriteriaBuilder();
         CriteriaQuery<Long> cityDtoCriteriaQuery=cb.createQuery(Long.class);
         Root<City> cityRoot=cityDtoCriteriaQuery.from(City.class);
